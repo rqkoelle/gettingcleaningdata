@@ -1,6 +1,6 @@
 # run_analysis.R
 # Cousera - Getting and Cleaning Data - Assignment
-# Rainer Koelle - version 1.0 - 27.04.2014
+# Rainer Koelle - version 1.0 - 18.12.2014 (course retake)
 
 ######################################################################################
 # configuration
