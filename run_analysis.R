@@ -99,4 +99,4 @@ tidy2 <- aggregate(tidy[3:68], by = tidy[1:2], mean)
 if(! all(colSums(is.na(tidy2))==0)) {print("data set: not well formed")} 
 
 ## write tidy2
-write.table(tidy2, file.path(projectPath, "tidyUCHARDatasetMeans.txt"))
+write.table(tidy2, file.path(projectPath, "tidyUCHARDatasetMeans.txt"), row.names=FALSE)
