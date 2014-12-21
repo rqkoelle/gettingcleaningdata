@@ -38,7 +38,7 @@ The script run_analysis performs the following operations:
 
 ### Step 0: configuration of project path
 Specify the path to the project folder.
-For the author's system this is: projectPath <- "~/__PERFORMANCE/Courses/GettingAndCleaningData/assignment/" on a Windows PC.
+For the author's system this is: projectPath <- "data/UCIHARDataset" on a Windows PC.
 
 Note: you may need to adapt the settings.
 

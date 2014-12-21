@@ -1,26 +1,24 @@
 # run_analysis.R
 # Cousera - Getting and Cleaning Data - Assignment
 # Rainer Koelle - version 1.0 - 18.12.2014 (course retake)
-
 ######################################################################################
-# configuration
-## path to project - adapt to your local settings
-projectPath <- "~/__PERFORMANCE/Courses/GettingAndCleaningData/assignment/"
 
+# configuration
+## path to project data
+projectPath <- "data/UCIHARDataset"
+
+## the zip file is downloaded and extracted to the data/UCIHARDataset folder
 
 #######################################################################################
 # 1. Merge the training and the test sets to create one data set.
 
 ## read in x, y, and subject id from training and test sets
-xTrain <- read.table(file.path(projectPath, "UCIHARDataset/train/X_train.txt"))
-xTest <- read.table(file.path(projectPath, "UCIHARDataset/test/X_test.txt"))
-
-yTrain <- read.table(file.path(projectPath, "UCIHARDataset/train/y_train.txt"))
-yTest <- read.table(file.path(projectPath, "UCIHARDataset/test/y_test.txt"))
-
-subjectTrain <- read.table(file.path(projectPath, "UCIHARDataset/train/subject_train.txt"))
-subjectTest <- read.table(file.path(projectPath, "UCIHARDataset/test/subject_test.txt"))
-
+xTrain <- read.table(file.path(projectPath, "train/X_train.txt"))
+xTest <- read.table(file.path(projectPath, "test/X_test.txt"))
+yTrain <- read.table(file.path(projectPath, "train/y_train.txt"))
+yTest <- read.table(file.path(projectPath, "test/y_test.txt"))
+subjectTrain <- read.table(file.path(projectPath, "train/subject_train.txt"))
+subjectTest <- read.table(file.path(projectPath, "test/subject_test.txt"))
 
 ## merge subsets - perform row-bind
 ## x/y/subject train set: row 1 .. 7352 - x/y/subject test: rows 7353 .. 10299
@@ -31,10 +29,10 @@ sData <- rbind(subjectTrain, subjectTest)
 
 #######################################################################################
 # 2. Extract only the measurements on the mean and standard deviation
-# for each measurement. 
+# for each measurement.
 
-## read-in features.txt 
-feature <- read.table(file.path(projectPath, "UCIHARDataset/features.txt"))
+## read-in features.txt
+feature <- read.table(file.path(projectPath, "features.txt"))
 
 ## regular expression filter to extract mean and standard deviation
 ## terms from 2nd column of feature (= feature names)
@@ -52,7 +50,7 @@ xData <- xData[,feature[,1]]
 # 3. descriptive activity names to name the activities in the data set
 
 ## read in activity labels
-activityLabels <- read.table(file.path(projectPath,"UCIHARDataset/activity_labels.txt"))
+activityLabels <- read.table(file.path(projectPath,"activity_labels.txt"))
 
 ## pretty names; lower case for activity labels and remove "_"
 activityLabels[,2] <- tolower(activityLabels[,2])
@@ -77,26 +75,26 @@ names(sData) <- "subject"
 yData <- data.frame( yData[,"activity"] )
 names(yData) <- "activity"
 
-## create tidy data set, colum bind 
+## create tidy data set, colum bind
 tidy <- cbind(sData, yData, xData )
 
 ## check tidy set completeness
 if(! all(colSums(is.na(tidy))==0)) {print("data set: not well formed")}
 
 ## write tidy data set
-write.table(tidy, file.path(projectPath, "tidyUCHARDataset.txt"))
+write.table(tidy, file.path(projectPath, "tidyUCHARDataset.txt"), row.name=FALSE)
 
 
 ###################################################################################
-# 5. Create a second, independent tidy data set with the average of 
-# each variable for each activity and each subject. 
-
+# 5. Create a second, independent tidy data set with the average of
+# each variable for each activity and each subject.
 ## aggregate tidy data frame into summary per subject and activity
+
 ## aggregation function --> mean
 tidy2 <- aggregate(tidy[3:68], by = tidy[1:2], mean)
 
 ## check tidy2 set completeness
-if(! all(colSums(is.na(tidy2))==0)) {print("data set: not well formed")} 
+if(! all(colSums(is.na(tidy2))==0)) {print("data set: not well formed")}
 
 ## write tidy2
 write.table(tidy2, file.path(projectPath, "tidyUCHARDatasetMeans.txt"), row.names=FALSE)
